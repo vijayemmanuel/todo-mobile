@@ -1,4 +1,4 @@
-import com.google.inject.{AbstractModule, Inject, Provides}
+import com.google.inject.{AbstractModule, Provides}
 import java.time.Clock
 
 import models.repos.ShoppingRepository

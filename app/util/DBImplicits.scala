@@ -1,9 +1,11 @@
 package util
 
-import com.google.inject.Inject
+//import com.google.inject.Inject
+import javax.inject.Inject
 import play.api.db.slick.DatabaseConfigProvider
 import slick.dbio.DBIO
 import slick.jdbc.JdbcProfile
+
 import scala.concurrent.Future
 
 class DBImplicits @Inject()(dbConfigProvider: DatabaseConfigProvider) {
