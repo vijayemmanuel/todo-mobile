@@ -30,6 +30,12 @@ To run all tests (routes and persistence tests):
 
 #Update the slick connection string to AWS RDS DB endpoint  in application.conf
 
+        slick.dbs.default.driver
+        slick.dbs.default.db.driver
+        slick.dbs.default.db.url
+        slick.dbs.default.db.user
+        slick.dbs.default.db.password
+
 #Deployment package
 
         $ sbt docker:stage
@@ -37,27 +43,18 @@ To run all tests (routes and persistence tests):
 Create additional file Dockerrun.aws.json in \target\docker\stage\ with following content
 (Ref : https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
 It is important to specify "HostPort" which is the open HTTP port for EC2 instance
-{
-   "AWSEBDockerrunVersion": "1",
-   "Ports": [
-       {
-           "ContainerPort": "9000",
-            "HostPort": 80
-       }
-   ]
-}
+
+	{
+	   "AWSEBDockerrunVersion": "1",
+	   "Ports": [
+	       {
+		   "ContainerPort": "9000",
+		    "HostPort": 80
+	       }
+	   ]
+	}
 
 Zip the contents in \target\docker\stage\ and deploy in Elastic BeanStalk Dashboard
-
-#Preparing RDS POSTGRES in AWS
-Set the connection string attributes in application.conf
-# SLICK DB CONNECTING STRING FOR AWS POSTGRES
-
-        slick.dbs.default.driver
-        slick.dbs.default.db.driver
-        slick.dbs.default.db.url
-        slick.dbs.default.db.user
-        slick.dbs.default.db.password
 
 
 #Postgres DB Connection Security group
