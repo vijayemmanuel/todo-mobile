@@ -8,7 +8,7 @@ It supports the following features:
 
 The project was thought to be used as an activator template.
 
-- The database pre-configured is an h2(default) and AWS RDS POSTGRES, so you just have to:
+**The database pre-configured is an h2(default) and AWS RDS POSTGRES**
 
 #Running
 
@@ -26,35 +26,43 @@ To run all tests (routes and persistence tests):
 
 	curl localhost:9000/buylist/1
 
-- Deploying on AWS Elastic BeanStalk with Postgres RDS
+**Deploying on AWS Elastic BeanStalk with Postgres RDS**
 
+#Update the slick connection string to AWS RDS DB endpoint  in application.conf
 
 #Deployment package
+
         $ sbt docker:stage
 
-        Create additional file Dockerrun.aws.json in \target\docker\stage\ with following content
-        (Ref : https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
-        It is important to specify "HostPort" which is the open HTTP port for EC2 instance
-        {
-           "AWSEBDockerrunVersion": "1",
-           "Ports": [
-               {
-                   "ContainerPort": "9000",
-        	        "HostPort": 80
-               }
-           ]
-        }
+Create additional file Dockerrun.aws.json in \target\docker\stage\ with following content
+(Ref : https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
+It is important to specify "HostPort" which is the open HTTP port for EC2 instance
+{
+   "AWSEBDockerrunVersion": "1",
+   "Ports": [
+       {
+           "ContainerPort": "9000",
+            "HostPort": 80
+       }
+   ]
+}
 
-        Zip the contents in \target\docker\stage\ and deploy in Elastic BeanStalk Dashboard
+Zip the contents in \target\docker\stage\ and deploy in Elastic BeanStalk Dashboard
 
 #Preparing RDS POSTGRES in AWS
+Set the connection string attributes in application.conf
+# SLICK DB CONNECTING STRING FOR AWS POSTGRES
 
-TBD
+        slick.dbs.default.driver
+        slick.dbs.default.db.driver
+        slick.dbs.default.db.url
+        slick.dbs.default.db.user
+        slick.dbs.default.db.password
 
 
-#AWS EC2 Security group
+#Postgres DB Connection Security group
 
-TBD
+The EC2 and Postgres should nomrally be in the same VPC. Open the the Incoming traffic for EC2 on the DB security group
 
 #Credits
 
