@@ -40,7 +40,7 @@ class ShoppingController @Inject()(shoppingDAO : ShoppingRepository, dbExecuter:
         name <- (request.body \ "name").asOpt[String]
       } yield {
         shoppingDAO.save(ShoppingItem(None, name, DateTime.now().toString(),"")).mapTo[ShoppingItem] map {
-          sup => Created("Id of Shopping Item Added : " + sup.id.getOrElse(0))
+          sup => Created(Json.toJson(sup))
         } recoverWith {
           case _ => Future {
             InternalServerError("Something wrong on server")
