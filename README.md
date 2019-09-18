@@ -30,6 +30,9 @@ Building for Android
 Running Android Virtual Device
 >react-native run-android
 
+Logging Android Virtual Device
+>react-native log-android
+
 
 
 
