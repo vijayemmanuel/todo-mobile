@@ -1,33 +1,26 @@
+import scala.util._
+import scala.util.control.NonFatal
 import org.scalajs.dom.ext.Ajax
-import play.api.libs.json.Json
-import sri.mobile.todo.components.Global
 
-
+import scalajs.concurrent.JSExecutionContext.Implicits.queue
+import scala.concurrent._
+import scala.concurrent.duration._
 import scala.collection.mutable
-import scala.util.{Failure, Success}
-import com.softwaremill.sttp._
-import play.api.libs.json
-
-import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.scalajs.js
+import scala.util.{Failure, Success}
 
-case class Transaction (title: String,
-  body: String, id: Int, link : String
-)
 val result = mutable.MutableList[String]()
-val f = sttp.get(uri"http://localhost:9000/v1/posts")
-implicit val backend = HttpURLConnectionBackend()
-val response = f.send()
-val json = Json.parse(response.unsafeBody)
 
-val s = """[{"id":"1","link":"/v1/posts/1","title":"BUY","body":"Onion"},{"id":"2","link":"/v1/posts/2","title":"BUY","body":"Tomato"}]"""
-
-val t = s.asInstanceOf[Array[Transaction]]
-println(t.length)
-for (transaction <- json.asInstanceOf[Array[Transaction]]) {
-  println(transaction)
-  if (transaction.title == Global.BUY.toString) {
-    result += transaction.body
-  }
+val url = "http://shoppingwebapp-env-1.p2v2cgebas.ap-south-1.elasticbeanstalk.com"
+val f = Ajax.get(url = url + "/buylist")
+  .map (xhr => js.JSON.parse(xhr.responseText).asInstanceOf[js.Array[js.Dynamic]])
+f.onComplete {
+  case Success(lst) =>
+    for (transaction <- lst)
+      result += transaction.name.toString
+    println(result)
+  case Failure(e) =>
+    println("Failed Request" + e)
 }
-println(result)
+
+println(f)

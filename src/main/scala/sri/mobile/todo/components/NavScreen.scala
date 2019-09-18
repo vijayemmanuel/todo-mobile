@@ -41,7 +41,7 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
   }
 
   /*
-  * Updation  of Props : componentwillRecieveProps --> shouldComponentUpdate --> componentWillUpdate -->
+  * Updation  of Props/State: componentwillRecieveProps --> shouldComponentUpdate --> componentWillUpdate -->
   *  render --> componentDidUpdate
   */
   override def componentWillUpdate (nextJSProps: JSProps { type ScalaProps = Props },
