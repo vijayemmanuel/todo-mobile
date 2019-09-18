@@ -2,9 +2,9 @@ package sri.mobile.todo.models
 
 import scala.scalajs.js
 
-class Transaction extends js.Object {
-  var title: String = _
-  var body: String = _
+class ShoppingItem extends js.Object {
+  var name: String = _
+  var orderDate: String = _
   var id: Int = _
-  var link : String = _
+  var boughtDate : String = _
 }

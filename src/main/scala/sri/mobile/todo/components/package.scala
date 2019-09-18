@@ -22,7 +22,8 @@ package object components {
             style = GlobalStyles.dynamicColor(iconOptions.tintColor)
           )
         },
-        tabBarLabel = "Buy"
+        tabBarLabel = "Buy",
+
       )),
     registerTabScreen[BoughtScreen](
       navigationOptions = NavigationTabScreenOptions(
