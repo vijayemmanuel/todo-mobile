@@ -8,6 +8,7 @@ import sri.universal._
 import sri.core.{JSProps, JSState, ReactElement}
 import sri.mobile.todo.components.MyNavScreen.Props
 import sri.mobile.todo.models.ShoppingItem
+import sri.universal.apis.Alert
 
 import scala.collection.mutable
 import scala.scalajs.js
@@ -18,11 +19,7 @@ import js.JSConverters._
 
 // State
 case class State ( items: js.Array[ShoppingItem],
-                   selectedItem : String = "",
-                   datasource : ListViewDataSource[String, String] = createListViewDataSource[String,String](
-                     (r1: String, r2: String) => r1 == r2,
-                     (s1: String, s2: String) => s1 == s2
-                   )
+                   selectedItem : String = ""
                  )
 
 class MyNavScreen extends NavigationAwareComponent[Props, State] {
@@ -45,17 +42,9 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
   *  render --> componentDidUpdate
   */
   override def componentWillUpdate (nextJSProps: JSProps { type ScalaProps = Props },
-                                    nextJSState: JSState { type ScalaState = State}): Unit = {
+                                    nextJSState: JSState { type ScalaState = State }): Unit = {
     //super.componentWillUpdate(nextJSProps, nextJSState)
     println(s"componentWillUpdate ")
-
-  }
-
-  /*
-  * Utility Methods
-   */
-  def getDataSource(lst: js.Array[String]) = {
-    state.datasource.cloneWithRows(lst)
   }
 
   def update: Unit = {
@@ -70,6 +59,7 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
     async {
       val f = await(Ajax.get(url = props.url + "/buylist")
         .map(xhr => js.JSON.parse(xhr.responseText).asInstanceOf[js.Array[js.Dynamic]]))
+
       for (transaction <- f)
       {
         val item = new ShoppingItem
@@ -79,35 +69,26 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
         item.id = transaction.id.toString.toInt
 
         result += item
-        setState((state: State) => state.copy(datasource = getDataSource(result.map( x=> x.name).toJSArray)
-          ,items = result.toJSArray
-          ,selectedItem = ""))
       }
+      setState((state: State) => state.copy(items = result.toJSArray
+        ,selectedItem = ""))
+
+
 
     }
     render()
   }
 
-
-  def renderBuyRow(text: String ,
-                sectionID: String | Int,
-                rowID: String | Int,
-                highlightRow: js.Function2[String | Int, String | Int, _]): ReactElement = {
-    View()(Text(style = GlobalStyles.ItemText)(text))
+  def renderBuyRow(info: ListItem[ShoppingItem]): ReactElement = {
+    View()(Text(numberOfLines = 2)(s"${info.item.name}\n${info.item.orderDate}"))
   }
 
-  def renderBoughtRow(text: String ,
-                   sectionID: String | Int,
-                   rowID: String | Int,
-                   highlightRow: js.Function2[String | Int, String | Int, _]): ReactElement = {
-    println (sectionID)
+  def renderBoughtRow(info: ListItem[ShoppingItem]) = {
+    println(s"${state.selectedItem} and ${info.item.name} ")
+    TouchableHighlight(onPress = () => onPressOfItem(info.item.name))(
+      View(style = if (state.selectedItem == info.item.name) GlobalStyles.ItemSelectedText else GlobalStyles.ItemText)
+      (Text(numberOfLines = 2)(s"${info.item.name}\n${info.item.orderDate}")))
 
-    View(style = if (state.selectedItem == text)  GlobalStyles.ItemSelectedText else GlobalStyles.ItemText)(TouchableHighlight(onPress = () => onPressOfItem(text))
-    (Text()(text)))
-  }
-
-  def renderSectionHeader(sectionData: String, sectionID: String) = {
-    View()(sectionData)
   }
 
   /*
@@ -117,14 +98,13 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
     //Alert.alert("", text)
 
     // Update the state with selectedItem
-    setState((state: State) => state.copy(datasource = state.datasource, items = state.items, selectedItem = text))
+    setState((state: State) => state.copy(items = state.items, selectedItem = text))
   }
 
   def onChangeInput(text:String) = {
     // Set the new state to selectedItem
-    setState((state:State) => state.copy(datasource = state.datasource, items = state.items, selectedItem = text))
+    setState((state:State) => state.copy(items = state.items, selectedItem = text))
   }
-
 
   def addToBuy = {
 
@@ -143,9 +123,10 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
         newShoppingItem.id = f.id.toString.toInt
 
         state.items.append(newShoppingItem)
-        setState((state: State) => state.copy(datasource = getDataSource(state.items.map(x=> x.name)), items = state.items))
+        setState((state: State) => state.copy(items = state.items))
       }
     }
+    update
   }
 
   def addToBought = {
@@ -159,38 +140,33 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
         val f = await(Ajax.put(url = props.url + "/bought/" + id.toString)
           .map(xhr => js.JSON.parse(xhr.responseText).asInstanceOf[ShoppingItem]))
 
-        setState((state: State) => state.copy(datasource = getDataSource(state.items.filter(x => x.id != id).map(x => x.name).toJSArray),
-          items = state.items.filter(x => x.id != id),
-          selectedItem = ""))
+        setState((state: State) => state.copy(items = state.items.filter(x => x.id != id), selectedItem = ""))
       }
-      update
+
     }
   }
-
-
 
   def clearDataSource = {
     // Clear from database all items marked for BUYs
 
 
     // Update the state with items
-     setState((state:State) => state.copy(
-       datasource = createListViewDataSource[String,String](
-         (r1: String, r2: String) => r1 == r2,
-         (s1: String, s2: String) => s1 == s2),
-         items = js.Array(),
-         selectedItem = "")
-     )
+    setState((state:State) => state.copy(items = js.Array(), selectedItem = "")
+    )
   }
 
-
   def render() = {
+    println ("Rendering...")
     ScrollView(style = GlobalStyles.navScreenContainer)(
 
       Text(style = GlobalStyles.HeaderText)(props.banner + (if(state.items.size != 0) "(" + state.items.size + ")" else "")),
       if (props.transactionType == Global.BUY) {
         View() (
-          ListView[String,String](dataSource = state.datasource, renderRow = renderBuyRow _),
+          FlatList(data = state.items,
+            renderItem = renderBuyRow _,
+            keyExtractor = (item:ShoppingItem, index:Int) => index.toString(),
+            extraData = state.selectedItem.asInstanceOf[js.Any]
+          ),
           TextInput(onChangeText = (text: String) => onChangeInput(text)),
           Button(onPress = () => addToBuy, title = "Buy"),
           //Button(onPress = () => clearDataSource, title = "Clear All")
@@ -198,7 +174,13 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
         )
       } else {
         View() (
-          ListView[String,String](dataSource = state.datasource,renderRow = renderBoughtRow _),
+          FlatList(data = state.items,
+            renderItem = renderBoughtRow _,
+            keyExtractor = (item:ShoppingItem, index:Int) => index.toString(),
+            extraData = state.selectedItem.asInstanceOf[js.Any]
+          ),
+          //ListView[String,String](dataSource = state.datasource,renderRow = renderBoughtRow1 _),
+
           Button(onPress = () => addToBought, title = "Bought"),
           Button(onPress = () => update, title = "Update")
 

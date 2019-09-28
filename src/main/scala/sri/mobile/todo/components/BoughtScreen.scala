@@ -5,6 +5,6 @@ import sri.navigation._
 
 class BoughtScreen extends NavigationScreenComponentNoPS {
 
-  def render() = MyNavScreen(new Props("Bought - List", Global.BOUGHT,"http://ShoppingWebApp-env.f93um5svdx.ap-south-1.elasticbeanstalk.com"))
+  def render() = MyNavScreen(new Props("Bought - List", Global.BOUGHT,"http://ShoppingWebApp-env.y8xqfz2fui.ap-south-1.elasticbeanstalk.com"))
 
 }
