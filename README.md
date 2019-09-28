@@ -8,7 +8,7 @@ You can run the project with following commands
 Init React- Native after cloning project and cd to location
 >cd sritodo
 
->react-native init sri-todo --version react-native@0.46.0
+>react-native init sritodo --version react-native@0.46.0
 
 
 // Move the sub folders 'android' and 'ios' from 'sritodo' folder to parent 'sritodo'
@@ -23,9 +23,9 @@ Init React- Native after cloning project and cd to location
 
 
 Building for Android
->android:dev
+>sbt android:dev
 
->android:prod
+>sbt android:prod
 
 Running Android Virtual Device
 >react-native run-android
@@ -33,6 +33,8 @@ Running Android Virtual Device
 Logging Android Virtual Device
 >react-native log-android
 
+Clean up
+>watchman watch-del-all && rm -rf node_modules && npm install && npm start -- --reset-cache
 
 
 
