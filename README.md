@@ -27,10 +27,11 @@ Building for Android
 
 >sbt android:prod
 
-Add Vector icons
-Edit android/app/build.gradle ( NOT android/build.gradle ) and add the following:
+To add Vector icons text below to android/app/build.gradle ( NOT android/build.gradle ):
+
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
->eact-native link react-native-vector-icons
+
+>react-native link react-native-vector-icons
 
 Running Android Virtual Device
 >react-native run-android
