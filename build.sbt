@@ -1,4 +1,4 @@
-name := "shopping-web-app"
+name := "beanstalk-todo-api"
 
 version := "0.0.1"
 

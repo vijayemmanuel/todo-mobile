@@ -1,5 +1,5 @@
-# shopping-web-app
-This Shopping ToDo Play Slick Restful App is a very simple json rest api showing one way of using Play Framework 2.7 with [slick 3](https://github.com/slick/slick) library for database access.
+# beanstalk-todo-api
+This  ToDo Play Slick Restful App is a very simple json rest api showing one way of using Play Framework 2.7 with [slick 3](https://github.com/slick/slick) library for database access.
 
 
 It supports the following features:
@@ -59,7 +59,7 @@ Zip the contents in \target\docker\stage\ and deploy in Elastic BeanStalk Dashbo
 
 #Postgres DB Connection Security group
 
-The EC2 and Postgres should nomrally be in the same VPC. Open the the Incoming traffic for EC2 on the DB security group
+The EC2 and Postgres should normally be in the same VPC. Open the the Incoming traffic for EC2 on the DB security group
 
 #Credits
 
