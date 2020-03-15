@@ -1,0 +1,26 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing how to write asynchronous code
+
+# Example
+GET     /index                       controllers.ShoppingController.index
+
+# To get all items to buy . Items which are bougth are filtered out
+GET     /buylist                     controllers.ShoppingController.getAlltoBuy
+
+# To get all items which are bought .
+GET     /boughtlist                  controllers.ShoppingController.getAllBought
+
+# To get particular item with id to buy
+GET     /buylist/:id                 controllers.ShoppingController.getBuy(id: Int)
+
+# To delete a buy item for a given date
+DELETE  /buylist/:id                 controllers.ShoppingController.deleteBuy(id: Int)
+
+# To mark a buy item as bought
+PUT     /bought/:id                  controllers.ShoppingController.addtoBought(id: Int)
+
+# To add a new item to buy
+POST    /buy                         controllers.ShoppingController.addtoBuy
