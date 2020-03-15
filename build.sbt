@@ -19,8 +19,8 @@ libraryDependencies ++= Seq(
   evolutions,
   guice,
   evolutions,
-  "com.h2database" % "h2" % "1.4.191", // ENABLE FOR H2 DATABASE
-  //"org.postgresql" % "postgresql" % "42.2.6", // ENABLE for POSTGRES (IF DEPLOYING IN AWS)
+  //"com.h2database" % "h2" % "1.4.191", // ENABLE FOR H2 DATABASE
+  "org.postgresql" % "postgresql" % "42.2.6", // ENABLE for POSTGRES (IF DEPLOYING IN AWS)
   ehcache,
   ws,
   filters,
