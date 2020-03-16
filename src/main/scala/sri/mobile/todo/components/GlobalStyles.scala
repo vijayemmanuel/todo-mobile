@@ -20,6 +20,9 @@ object GlobalStyles extends InlineStyleSheetUniversal {
   val ItemSelectedText =
     style(margin := 14,backgroundColor := "red", shadowOffset := js.Dynamic.literal(height = 10))
 
+  val OneRowText = style (flex := 5)
+  val OneRowButton = style (flex := 1)
+  val OneRow = style(flex:= 1, flexDirection:= "row", bottom := 0)
 
   val HeaderText =
     style(margin := 14, shadowOffset := js.Dynamic.literal(height = 10), fontWeight.bold)

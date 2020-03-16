@@ -17,8 +17,8 @@ package object components {
         tabBarIcon = (iconOptions: IconOptions) => {
           Ionicons(
             name =
-              if (SriPlatform.isAndroid) IoniconsList.IOS_ADD_CIRCLE
-              else IoniconsList.IOS_ADD_CIRCLE_OUTLINE,
+              if (SriPlatform.isAndroid) IoniconsList.IOS_CART
+              else IoniconsList.IOS_CART_OUTLINE,
             size = 27,
             style = GlobalStyles.dynamicColor(iconOptions.tintColor)
           )
@@ -30,8 +30,8 @@ package object components {
         tabBarIcon = (iconOptions: IconOptions) => {
           Ionicons(
             name =
-              if (iconOptions.focused) IoniconsList.IOS_REMOVE_CIRCLE
-              else IoniconsList.IOS_REMOVE_CIRCLE_OUTLINE,
+              if (iconOptions.focused) IoniconsList.IOS_BASKET
+              else IoniconsList.IOS_BASKET_OUTLINE,
             size = 26,
             style = GlobalStyles.dynamicColor(iconOptions.tintColor)
           )

@@ -40,3 +40,6 @@ android/build
 ios/build
 assets/scalajs-output.js
 assets/scalajs-output.js.map
+/android/
+/assets/
+/package-lock.json

@@ -167,8 +167,8 @@ class MyNavScreen extends NavigationAwareComponent[Props, State] {
             keyExtractor = (item:ShoppingItem, index:Int) => index.toString(),
             extraData = state.selectedItem.asInstanceOf[js.Any]
           ),
-          TextInput(onChangeText = (text: String) => onChangeInput(text)),
-          Button(onPress = () => addToBuy, title = "Buy"),
+          View(style = GlobalStyles.OneRow)(TextInput(style =  GlobalStyles.OneRowText, onChangeText = (text: String) => onChangeInput(text)),
+          Button(style =  GlobalStyles.OneRowButton,onPress = () => addToBuy, title = "Buy")),
           //Button(onPress = () => clearDataSource, title = "Clear All")
           Button(onPress = () => update, title = "Update")
         )
